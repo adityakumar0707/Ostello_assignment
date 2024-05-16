@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+import '../providers/provider.dart';
 
-class _MyHomePageState extends State<MyHomePage> {
-  String selectedOption = 'Overview';
+class MyHomePage extends ConsumerWidget {
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedOption = ref.watch(selectedOptionProvider);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -45,27 +43,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       title: 'Overview',
                       isSelected: selectedOption == 'Overview',
                       onTap: () {
-                        setState(() {
-                          selectedOption = 'Overview';
-                        });
+                        ref.read(selectedOptionProvider.notifier).state = 'Overview';
                       },
                     ),
                     OptionItem(
                       title: 'Marketplace',
                       isSelected: selectedOption == 'Marketplace',
                       onTap: () {
-                        setState(() {
-                          selectedOption = 'Marketplace';
-                        });
-                      },
-                    ),
+                        print("object");
+                          ref.read(selectedOptionProvider.notifier).state = 'Marketplace';
+                    }),
                     OptionItem(
                       title: 'News',
                       isSelected: selectedOption == 'News',
                       onTap: () {
-                        setState(() {
-                          selectedOption = 'News';
-                        });
+                         ref.read(selectedOptionProvider.notifier).state = 'News';
                       },
                     ),
                   ],
@@ -91,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                  Row(
                                    crossAxisAlignment: CrossAxisAlignment.start,
                                    children: [
-                                     Expanded(
+                                     Flexible(
                                        flex: 2,
                                        child: Container(
                                          child: Stack(
@@ -101,15 +93,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                                borderRadius: BorderRadius.circular(10),
                                                child: Image.asset(
                                                  'assets/Rectangle 20041.png',
-                                                 height: 180,
-                                                 width: 250,
-                                                 fit: BoxFit.cover,
+                                                 height: height*0.2,
+                                                 width: height*0.2,
+                                                 fit: BoxFit.fill,
                                                ),
                                              ),
 
                                              Positioned(
-                                               top: 10,
-                                               left: 10,
+                                               top: height*0.01,
+                                               left: width*0.01,
                                                  child: Container(
                                                    padding: EdgeInsets.only(top: 2,bottom: 2,left: 7,right: 2),
                                                    decoration: BoxDecoration(
@@ -129,8 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                              ),
                                              Positioned(
-                                               bottom: 0,
-                                               left: 10,
+                                               bottom: height*0.01,
+                                               left: width*0.01,
                                                child: Row(
                                                  crossAxisAlignment: CrossAxisAlignment.center,
                                                  children: [
@@ -147,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                        ),
                                                      ],
                                                    ),
-                                                   SizedBox(width: 40,),
+                                                   SizedBox(width: width*0.1,),
                                                    Column(
                                                      children: [
                                                        Image.asset("assets/Vector (1).png"),
@@ -160,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                          ),
                                        ),
                                      ),
-                                     Expanded(
+                                     Flexible(
                                        flex: 3,
                                        child: Padding(
                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -185,11 +177,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                                  ),
                                                ],
                                              ),
-                                             SizedBox(height: 10),
+                                             SizedBox(height: height*0.015),
                                              Text('All Subjects · Com · Sci'),
-                                             SizedBox(height: 10),
+                                             SizedBox(height: height*0.01),
                                              Text('Kalkaji  · 3kms away'),
-                                             SizedBox(height: 10),
+                                             SizedBox(height: height*0.015),
                                              ElevatedButton(
                                                onPressed: () {},
                                                child: Text(
@@ -217,7 +209,6 @@ class _MyHomePageState extends State<MyHomePage> {
                        );
                         ;
                   }),
-
                 ],
                 if (selectedOption == 'News') ...[
                   ListView.builder(
@@ -247,7 +238,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       }),
-
                 ],
 
               ],
